@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import SelectCountry from './SelectCountry'
+import { ChildrenProps } from '../_types'
 
-const UpdateProfileForm = () => {
+const UpdateProfileForm = ({ children }: ChildrenProps) => {
 	const countryFlag = '/salone.svg'
-	const nationality = 'portugal'
 
 	return (
 		<form className="bg-primary-900 py-6 sm:py-8 px-4 sm:px-6 md:px-8 text-base sm:text-lg flex gap-4 sm:gap-6 flex-col">
@@ -26,7 +26,7 @@ const UpdateProfileForm = () => {
 			<div className="space-y-2">
 				<div className="flex items-center justify-between">
 					<label htmlFor="nationality">Where are you from?</label>
-					<div className='relative aspect-square'>
+					<div className="relative aspect-square">
 						<Image
 							src={countryFlag}
 							fill
@@ -35,12 +35,7 @@ const UpdateProfileForm = () => {
 						/>
 					</div>
 				</div>
-				<SelectCountry
-					name="nationality"
-					id="nationality"
-					className="px-4 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm border-none focus:ring-2 focus:ring-accent-500"
-					defaultCountry={nationality}
-				/>
+				{children}
 			</div>
 
 			<div className="space-y-2 w-full">
@@ -52,7 +47,7 @@ const UpdateProfileForm = () => {
 			</div>
 
 			<div className="flex justify-end items-center gap-4 sm:gap-6 w-full">
-				<button className="bg-accent-500 px-6 py-3 sm:px-8 sm:py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all w-full sm:w-auto">
+				<button className="bg-accent-500 px-6 py-3 sm:px-8 sm:py-4 text-primary-800 font-semibold hover:bg-accent-600 hover:scale-95 transition-all w-full sm:w-auto">
 					Update profile
 				</button>
 			</div>

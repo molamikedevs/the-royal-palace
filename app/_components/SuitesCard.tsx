@@ -15,7 +15,7 @@ function SuitesCard({ suite }: { suite: Suites }) {
 					src={`${suite.image}`}
 					alt={`Suites ${name}`}
 					fill
-					className="object-cover hover:scale-95 transition-all duration-300"
+					className="object-cover hover:scale-95 transition-all cursor-pointer duration-300"
 					sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
 					priority={false}
 				/>

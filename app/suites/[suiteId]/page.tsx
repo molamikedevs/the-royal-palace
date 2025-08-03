@@ -53,8 +53,6 @@ const SuiteDetailsPage = async ({
 
 	// Fetch the suite details using the suite ID from the URL parameters
 	const suite = await getSuiteById(suiteId)
-	const settings = await getSettings()
-	const bookedDates = await getBookedDatesBySuiteId(suiteId)
 
 	return (
 		<div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -66,7 +64,7 @@ const SuiteDetailsPage = async ({
 				</h2>
 
 				<Suspense fallback={<Spinner />}>
-					<Reservation suite={{ ...suite, id: suite.id }} settings={settings} bookedDates={bookedDates} />
+					<Reservation suite={suite} />
 				</Suspense>
 			</div>
 		</div>

@@ -5,20 +5,16 @@
 
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
-import { CustomDateRange } from '../_types'
+import { CustomDateRange, Suite } from '../_types'
 import { useReservationContext } from '@/context/ReservationContext'
 
-
-
-
-function DateSelector({
-	settings,
-	bookedDates,
-}: {
+type DateSelectorProps = {
 	settings: any
 	bookedDates: Date[]
-}) {
-	const initialState = { from: undefined as Date | undefined, to: undefined as Date | undefined }
+	suite: Suite
+}
+
+function DateSelector({ settings, bookedDates, suite }: DateSelectorProps) {
 	const { range, setRange, resetRange } = useReservationContext()
 	// CHANGE
 	const regularPrice = 23
@@ -30,13 +26,12 @@ function DateSelector({
 
 	const { maxBookingLength, minBookingLength } = settings
 
-
 	return (
 		<div className="flex flex-col justify-between">
 			<DayPicker
 				className="pt-12 place-self-center"
 				mode="range"
-				onSelect={(range) => setRange((range as CustomDateRange) || initialState)}
+				onSelect={range => setRange((range as CustomDateRange) || {})}
 				selected={range}
 				min={minBookingLength + 1}
 				max={maxBookingLength}

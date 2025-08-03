@@ -1,15 +1,12 @@
-type FilterButtonProps = {
-	filter: string
-	handleFilter: (filter: string) => void
-	activeFilter: string
-	children: React.ReactNode
-}
+// the-royal-palace/app/_components/FilterButton.tsx
+// This component defines a button for filtering suites based on capacity
+import { FilterButtonProps } from '@/app/_types'
 
 const FilterButton = ({
 	filter,
 	handleFilter,
 	activeFilter,
-	children
+	children,
 }: FilterButtonProps) => {
 	return (
 		<button

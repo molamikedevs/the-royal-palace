@@ -1,8 +1,9 @@
 // File: app/_components/ReservationForm.tsx
 // This file defines the ReservationForm component which handles the reservation form for a specific suite
+'use client'
+
 import { useReservationContext } from '@/context/ReservationContext'
 import Image from 'next/image'
-
 
 // Interface for reservation settings
 // This interface defines the structure of the reservation settings used in the form
@@ -12,42 +13,36 @@ interface ReservationSettings {
 
 export default function ReservationForm({
 	suite,
+	user,
 }: {
 	suite: ReservationSettings
+	user: {
+		firstName: string
+		avatar: string
+	}
 }) {
 	const { maxCapacity } = suite
 	const { range } = useReservationContext()
-
-	const name = {
-		firstName: 'Kevin',
-		lastName: 'Smith',
-		email: 'guest@example.com',
-		avatar: '',
-	}
 
 	return (
 		<div className="scale-[1.01] w-full max-w-2xl mx-auto">
 			<div className="bg-primary-800 text-primary-300 px-16 py-2 flex justify-between items-center">
 				<p>Logged in as</p>
 
-				<p>
-					{String(range.from)} to {String(range.to)}
-				</p>
-
 				<div className="flex gap-4 items-center aspect-square">
 					<Image
 						className="rounded-full"
-						src={name.avatar}
+						src={user.avatar}
 						height={30}
 						width={30}
-						alt={name.firstName || 'User avatar'}
+						alt={user.firstName || 'User avatar'}
 						priority={false}
 						loading="lazy"
 						onError={e => {
 							e.currentTarget.src = '/avatar.png'
 						}}
 					/>
-					<p>{name.firstName}</p>
+					<p>{user.firstName}</p>
 				</div>
 			</div>
 

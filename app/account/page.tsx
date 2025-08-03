@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import { auth } from '../_lib/auth/config'
 
 // this snippet defines the metadata for the Guest Area page
 export const metadata: Metadata = {
@@ -6,18 +7,17 @@ export const metadata: Metadata = {
 }
 
 // functional component representing the Account landing page
-const AccountPage = () => {
-	const name = {
-		firstName: 'Kevin',
-		lastName: 'Smith',
-		email: 'guest@example.com',
-		avatar: 'https://example.com/avatar.jpg',
+const AccountPage = async () => {
+	const session = await auth()
+
+	const user = {
+		firstName: session?.user?.name?.split(' ')?.[0] || 'Guest',
 	}
 
 	return (
 		<div>
 			<h2 className="font-semibold text-2xl sm:text-3xl md:text-4xl text-accent-400 mb-4">
-				Welcome, {name.firstName}
+				Welcome, {user.firstName}
 			</h2>
 
 			<p className="text-primary-200 text-base sm:text-lg mb-6 max-w-2xl">
@@ -25,9 +25,15 @@ const AccountPage = () => {
 			</p>
 
 			<ul className="list-disc pl-5 text-primary-100 space-y-2 text-sm sm:text-base md:text-lg">
-				<li>📅 View and manage your <strong>reservations</strong></li>
-				<li>👤 Update your <strong>guest profile</strong> and preferences</li>
-				<li>🏨 Explore available <strong>suites</strong> and amenities</li>
+				<li>
+					📅 View and manage your <strong>reservations</strong>
+				</li>
+				<li>
+					👤 Update your <strong>guest profile</strong> and preferences
+				</li>
+				<li>
+					🏨 Explore available <strong>suites</strong> and amenities
+				</li>
 				<li>🔐 Sign out securely when you&#39;re done</li>
 			</ul>
 		</div>
@@ -36,21 +42,4 @@ const AccountPage = () => {
 
 export default AccountPage
 
-
-
-
-// export default async function Page() {
-// 	const session = await auth()
-// 	const firstName = session?.user?.name?.split(' ')[0] || 'Guest'
-
-// 	if (!session) {
-// 		redirect(`/api/auth/signin?callbackUrl=${encodeURIComponent('/account')}`)
-// 	}
-
-// 	return (
-// 		<h2 className="font-semibold text-2xl text-accent-400 mb-7">
-// 			Welcome, {firstName}
-// 		</h2>
-// 	)
-// }
 

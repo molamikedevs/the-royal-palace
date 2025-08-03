@@ -5,7 +5,7 @@ import Spinner from "@/app/_components/Loader"
 
 const Loading = () => {
 	return (
-		<div className="grid items-center justify-center">
+		<div className="flex items-center justify-center">
 			<p>Loading suites...</p>
 			<Spinner />
 		</div>

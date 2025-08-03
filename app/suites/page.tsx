@@ -2,9 +2,9 @@
 // This file defines the Suites page for the Royal Palace application, displaying a list of luxury suites
 import { Suspense } from 'react'
 import Spinner from '@/app/loading'
-import SuiteList from '../_components/SuiteList'
-import ReservationReminder from '../_components/ReservationReminder'
-import Filter from '../_components/Filter'
+import SuiteList from '@/app/_components/SuiteList'
+import ReservationReminder from '@/app/_components/ReservationReminder'
+import Filter from '@/app/_components/Filter'
 
 // Metadata for the Suites page
 // This metadata is used for SEO and page title
