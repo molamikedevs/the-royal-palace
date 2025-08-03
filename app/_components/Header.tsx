@@ -1,9 +1,7 @@
-// import { getUser } from '@/lib/auth' // your future auth util
-import NavigationClient from './NavigationClient'
+import Navigation from './Navigation'
 import Logo from './Logo'
 
 export default async function Header() {
-	// const user = await getUser() // SSR user fetching
 	const user = {
 		firstName: 'Kevin',
 		lastName: 'Smith',
@@ -14,11 +12,8 @@ export default async function Header() {
 	return (
 		<header className="border-b border-primary-900 px-8 py-5">
 			<div className="flex justify-between items-center max-w-7xl mx-auto relative">
-				{/* Logo */}
 				<Logo />
-
-				{/* Client-side nav (handles hamburger + active path) */}
-				<NavigationClient user={user} />
+				<Navigation user={user} />
 			</div>
 		</header>
 	)

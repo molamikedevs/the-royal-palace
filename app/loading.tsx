@@ -1,5 +1,5 @@
-function Spinner() {
+const Loading = () => {
 	return <div className="spinner"></div>
 }
 
-export default Spinner
+export default Loading

@@ -2,6 +2,7 @@
 import { getCountries } from '../_lib/utils'
 import { SelectCountryProps } from '../_types'
 
+
 // This snippet defines the structure of a country object
 interface Country {
 		name: string

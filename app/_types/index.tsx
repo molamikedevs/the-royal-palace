@@ -80,3 +80,29 @@ export interface Booking {
 		image: string
 	}
 }
+
+// Interface for reservation properties
+// This defines the structure of the reservation properties used in the application
+export interface ReservationProps {
+	suite: Suites;
+	settings: any; // Replace 'any' with the correct type if available
+	bookedDates: any; // Replace 'any' with the correct type if available
+};
+
+// Interface for the navigation context
+// This defines the structure of the navigation context used in the application
+export interface NavigationContextType {
+    pathname: string
+    menuOpen: boolean
+    toggleMenu: () => void
+    closeMenu: () => void
+}
+
+
+// Interface for the SelectCountry component props
+export interface SelectCountryProps {
+	defaultCountry: string // Default country to be selected
+	name: string // Name attribute for the select element
+	id?: string // Optional ID for the select element
+	className?: string // Optional CSS class for styling
+}

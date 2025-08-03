@@ -1,11 +1,12 @@
+// File: app/_components/MobileNav.tsx
 import React from 'react'
-import Link from "next/link";
-import { 
-  CalendarDaysIcon,
-  HomeIcon,
-  UserIcon,
-  ArrowRightOnRectangleIcon
-} from "@heroicons/react/24/solid";
+import Link from 'next/link'
+import {
+	CalendarDaysIcon,
+	HomeIcon,
+	UserIcon,
+	ArrowRightOnRectangleIcon,
+} from '@heroicons/react/24/solid'
 
 interface MobileNavProps {
 	pathname: string

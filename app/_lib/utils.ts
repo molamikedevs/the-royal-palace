@@ -1,14 +1,13 @@
 // Comment on all functions in this file according to their purpose
 // Utility functions for the Royal Palace application
-import { format, formatDistance, isPast, isToday, parseISO } from "date-fns";
-
+import { formatDistance, isWithinInterval, parseISO } from 'date-fns'
+import { CustomDateRange } from '../_types'
 
 // Interface for formatDistance options
 // This interface defines the options that can be passed to the formatDistance function
 export interface FormatDistanceOptions {
-	addSuffix?: boolean;
+	addSuffix?: boolean
 }
-
 
 // Get countries from an external API
 // This function fetches a list of countries and their flags from a public API
@@ -24,9 +23,25 @@ export async function getCountries() {
 
 // Formats the distance from the current date to a given date string
 // This function takes a date string, parses it, and returns a human-readable distance from now
-
-
 export const formatDistanceFromNow = (dateStr: string): string =>
 	formatDistance(parseISO(dateStr), new Date(), {
 		addSuffix: true,
-	} as FormatDistanceOptions).replace("about ", "");
+	} as FormatDistanceOptions).replace('about ', '')
+
+// Checks if a date range overlaps with an array of booked dates
+// This function checks if the selected date range overlaps with any booked dates
+export const isAlreadyBooked = (
+	range: CustomDateRange,
+	datesArr: Date[]
+): boolean => {
+	return (
+		range.from !== undefined &&
+		range.to !== undefined &&
+		datesArr.some(
+			date =>
+				range.from &&
+				range.to &&
+				isWithinInterval(date, { start: range.from, end: range.to })
+		)
+	)
+}
