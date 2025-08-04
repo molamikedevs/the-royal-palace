@@ -2,7 +2,7 @@
 // This file contains functions to interact with the Supabase API for the Royal Palace application.
 
 // Import the Supabase client instance from our configuration
-import { SuiteDetails, Suites } from '@/app/_types'
+import { Suite, Suites } from '@/app/_types'
 import { supabase } from './config'
 import { notFound } from 'next/navigation'
 import { eachDayOfInterval } from 'date-fns'
@@ -41,8 +41,8 @@ export const getSuites = async function (): Promise<Suites[]> {
 }
 
 // Function to fetch a specific suite by its ID
-// Returns a SuiteDetails object or throws an error if the fetch fails
-export const getSuiteById = async function (id: string): Promise<SuiteDetails> {
+// Returns a Suite object or throws an error if the fetch fails
+export const getSuiteById = async function (id: string): Promise<Suite> {
 	try {
 		// Execute the Supabase query:
 		// 1. Select from 'suites' table
@@ -73,7 +73,6 @@ export const getSuiteById = async function (id: string): Promise<SuiteDetails> {
 		notFound() // Redirect to 404 page
 	}
 }
-
 
 // Function to fetch booked dates for a specific suite by its ID
 // Returns an array of Date objects representing booked dates or throws an error if the fetch fails
@@ -109,7 +108,6 @@ export async function getBookedDatesBySuiteId(
 	return bookedDates
 }
 
-
 // Function to fetch settings from the database
 // Returns a settings object or throws an error if the fetch fails
 export async function getSettings() {
@@ -120,5 +118,32 @@ export async function getSettings() {
 		throw new Error('Settings could not be loaded')
 	}
 
+	return data
+}
+
+// Function to create a new guest in the database
+// Accepts a newGuest object with email and fullName properties
+export async function createGuest(newGuest: {
+	email: string
+	fullName: string
+}) {
+	const { data, error } = await supabase.from('guests').insert([newGuest])
+	if (error) {
+		console.error('Supabase insert error:', error)
+		throw error // Let the callback catch this
+	}
+	return data
+}
+
+// Function to fetch a guest by their email
+// Returns a guest object or null if no guest is found
+export async function getGuest(email: string) {
+	const { data, error } = await supabase
+		.from('guests')
+		.select('*')
+		.eq('email', email)
+		.single()
+
+	// No error here! We handle the possibility of no guest in the sign in callback
 	return data
 }

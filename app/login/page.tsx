@@ -11,7 +11,7 @@ export const metadata = {
 const page = () => {
 	return (
 		<div className="flex flex-col mt-10 gap-10 items-center">
-			<h2 className="text-3xl font-semibold">
+			<h2 className="text-xl sm:text-3xl font-semibold text-center">
 				Sign in to access your guest area
 			</h2>
 			<SignInButtons />

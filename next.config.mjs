@@ -10,11 +10,20 @@ const nextConfig = {
 		remotePatterns: [
 			{
 				protocol: 'https',
-				hostname: 'zwmfdfzvhzgffvnxrnwb.supabase.co', // <== replace with the one you found
+				hostname: 'zwmfdfzvhzgffvnxrnwb.supabase.co',
 				pathname: '/storage/v1/object/public/**',
 			},
+			{
+				protocol: 'https',
+				hostname: 'lh3.googleusercontent.com',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'avatars.githubusercontent.com',
+				pathname: '/**',
+			},
 		],
-		domains: ['lh3.googleusercontent.com', 'avatars.githubusercontent.com'],
 	},
 }
 

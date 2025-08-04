@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 // functional component representing the Account landing page
 const AccountPage = async () => {
 	const session = await auth()
+	console.log('Session:', session)
 
 	const user = {
 		firstName: session?.user?.name?.split(' ')?.[0] || 'Guest',
