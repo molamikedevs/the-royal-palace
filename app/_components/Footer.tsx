@@ -1,3 +1,5 @@
+// Footer.tsx
+// This file defines the Footer component which displays the footer section of the website
 import React from 'react'
 import Link from 'next/link'
 import {
@@ -63,7 +65,7 @@ const Footer = () => {
 						</div>
 						<div className="flex items-center gap-2">
 							<EnvelopeIcon className="h-5 w-5 text-accent-500" />
-							<span>bookings@theroyalspalace.com</span>
+							<span>reservations@theroyalspalace.com</span>
 						</div>
 					</div>
 				</div>

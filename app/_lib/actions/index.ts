@@ -6,7 +6,7 @@ import { supabase } from '../supabase/config'
 import { getReservations } from '../supabase/api'
 import { redirect } from 'next/navigation'
 import { ReservationFormData } from '@/app/_types'
-import { is, se } from 'date-fns/locale'
+
 
 //Update profile form action
 export async function updateProfileAction(formData: FormData) {
