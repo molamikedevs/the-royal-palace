@@ -1,53 +1,69 @@
-import { PencilSquareIcon } from "@heroicons/react/24/solid";
-import { format, isPast, isToday } from "date-fns";
-import DeleteReservation from "./DeleteReservation";
-import { formatDistanceFromNow } from "../_lib/utils";
-import { Booking } from "../_types";
+import { PencilSquareIcon } from '@heroicons/react/24/solid'
+import { format, isPast, isToday } from 'date-fns'
+import DeleteReservation from './DeleteReservation'
+import { formatDistanceFromNow } from '../_lib/utils'
+import { Reservations } from '../_types'
 import Image from 'next/image'
+import Link from 'next/link'
 
+function ReservationCard({
+	reservation,
+	onDelete,
+}: {
+	reservation: Reservations
+	onDelete: (id: string) => void
+}) {
+	// Destructure with fallbacks to prevent errors
+	const {
+		id,
+		startDate,
+		endDate,
+		numNights,
+		totalPrice,
+		numGuests,
+		created_at,
+		suites,
+	} = reservation
 
-function ReservationCard({ booking }: { booking: Booking }) {
-  const {
-    id,
-    guestId,
-    startDate,
-    endDate,
-    numNights,
-    totalPrice,
-    numGuests,
-    status,
-    created_at,
-    cabins: { name, image },
-  } = booking;
+	// Provide fallback values if suites is missing
+	const suiteName = suites?.name || 'Unknown Suite'
+	const suiteImage = suites?.image || '/default-suite.jpg'
 
-  return (
-		<div className="flex border border-primary-800">
-			<div className="relative h-32 aspect-square">
+	return (
+		<div className="flex flex-col md:flex-row border border-primary-800">
+			{/* IMAGE */}
+			<div className="relative w-full h-48 md:h-auto md:flex-1 md:aspect-square">
 				<Image
-					src={image}
-					alt={`Cabin ${name}`}
-					className="object-cover border-r border-primary-800"
+					src={suiteImage}
+					alt={`Suite ${suiteName}`}
+					className="object-cover border-b md:border-b-0 md:border-r border-primary-800"
 					fill
+					priority={false}
+					loading="lazy"
+					onError={e => {
+						e.currentTarget.src = '/default-suite.jpg'
+					}}
 				/>
 			</div>
 
-			<div className="flex-grow px-6 py-3 flex flex-col">
-				<div className="flex items-center justify-between">
+			{/* MAIN CONTENT */}
+			<div className="flex-grow px-4 py-4 flex flex-col gap-2">
+				<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
 					<h3 className="text-xl font-semibold">
-						{numNights} nights in Cabin {name}
+						{numNights} nights in Suite {suiteName}
 					</h3>
 					{isPast(new Date(startDate)) ? (
-						<span className="bg-yellow-800 text-yellow-200 h-7 px-3 uppercase text-xs font-bold flex items-center rounded-sm">
+						<span className="bg-yellow-800 text-yellow-200 w-max px-3 h-6 uppercase text-xs font-bold flex items-center rounded-sm">
 							past
 						</span>
 					) : (
-						<span className="bg-green-800 text-green-200 h-7 px-3 uppercase text-xs font-bold flex items-center rounded-sm">
+						<span className="bg-green-800 text-green-200 w-max px-3 h-6 uppercase text-xs font-bold flex items-center rounded-sm">
 							upcoming
 						</span>
 					)}
 				</div>
 
-				<p className="text-lg text-primary-300">
+				<p className="text-base text-primary-300">
 					{format(new Date(startDate), 'EEE, MMM dd yyyy')} (
 					{isToday(new Date(startDate))
 						? 'Today'
@@ -59,29 +75,40 @@ function ReservationCard({ booking }: { booking: Booking }) {
 					) &mdash; {format(new Date(endDate), 'EEE, MMM dd yyyy')}
 				</p>
 
-				<div className="flex gap-5 mt-auto items-baseline">
+				<div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mt-auto">
 					<p className="text-xl font-semibold text-accent-400">${totalPrice}</p>
-					<p className="text-primary-300">&bull;</p>
-					<p className="text-lg text-primary-300">
+					<p className="text-primary-300 hidden sm:inline">&bull;</p>
+					<p className="text-base text-primary-300">
 						{numGuests} guest{numGuests > 1 && 's'}
 					</p>
-					<p className="ml-auto text-sm text-primary-400">
+					<p className="sm:ml-auto text-sm text-primary-400 mt-1 sm:mt-0">
 						Booked {format(new Date(created_at), 'EEE, MMM dd yyyy, p')}
 					</p>
 				</div>
 			</div>
 
-			<div className="flex flex-col border-l border-primary-800 w-[100px]">
-				<a
-					href={`/account/reservations/edit/${id}`}
-					className="group flex items-center gap-2 uppercase text-xs font-bold text-primary-300 border-b border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors hover:text-primary-900">
-					<PencilSquareIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors" />
-					<span className="mt-1">Edit</span>
-				</a>
-				<DeleteReservation bookingId={id} />
+			{/* ACTIONS */}
+			<div className="flex gap-8 md:flex-col justify-between md:justify-center border-t md:border-t-0 md:border-l border-primary-800 md:w-[100px]">
+				{!isPast(new Date(startDate)) && (
+					<>
+						<Link
+							href={`/account/reservations/edit/${id}`}
+							className="group flex items-center justify-center gap-2 uppercase text-xs font-bold text-primary-300 border-r md:border-r-0 md:border-b border-primary-800 px-3 py-2 hover:bg-accent-600 transition-colors hover:text-primary-900 w-full">
+							<PencilSquareIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors" />
+							<span>Edit</span>
+						</Link>
+						<div className="w-full">
+							<DeleteReservation
+								onDelete={onDelete}
+								reservationId={id}
+								className="w-full"
+							/>
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	)
 }
 
-export default ReservationCard;
+export default ReservationCard

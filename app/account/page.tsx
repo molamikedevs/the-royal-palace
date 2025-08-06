@@ -8,9 +8,17 @@ export const metadata: Metadata = {
 
 // functional component representing the Account landing page
 const AccountPage = async () => {
-	const session = await auth()
-	console.log('Session:', session)
-
+	const session = await auth() // Check if the user is authenticated
+	// If the session is not available, it means the user is not signed in
+	if (!session) {
+		return (
+			<div className="px-4 sm:px-6 md:px-8 py-6">
+				<p className="text-primary-200">You are not signed in.</p>
+			</div>
+		)
+	}
+	// Extracting the first name from the session user name
+	// If the name is not available, it defaults to 'Guest'
 	const user = {
 		firstName: session?.user?.name?.split(' ')?.[0] || 'Guest',
 	}

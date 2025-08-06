@@ -2,7 +2,7 @@
 // This file contains functions to interact with the Supabase API for the Royal Palace application.
 
 // Import the Supabase client instance from our configuration
-import { Suite, Suites } from '@/app/_types'
+import { Reservations, Suites } from '@/app/_types'
 import { supabase } from './config'
 import { notFound } from 'next/navigation'
 import { eachDayOfInterval } from 'date-fns'
@@ -42,7 +42,7 @@ export const getSuites = async function (): Promise<Suites[]> {
 
 // Function to fetch a specific suite by its ID
 // Returns a Suite object or throws an error if the fetch fails
-export const getSuiteById = async function (id: string): Promise<Suite> {
+export const getSuiteById = async function (id: string): Promise<Suites> {
 	try {
 		// Execute the Supabase query:
 		// 1. Select from 'suites' table
@@ -83,24 +83,24 @@ export async function getBookedDatesBySuiteId(
 	today.setUTCHours(0, 0, 0, 0)
 	const todayISOString = today.toISOString()
 
-	// Getting all bookings
+	// Getting all reservations
 	const { data, error } = await supabase
-		.from('bookings')
+		.from('reservations')
 		.select('*')
 		.eq('suiteId', suiteId)
 		.or(`startDate.gte.${todayISOString},status.eq.checked-in`)
 
 	if (error) {
 		console.error(error)
-		throw new Error('Bookings could not get loaded')
+		throw new Error('Reservations could not get loaded')
 	}
 
 	// Converting to actual dates to be displayed in the date picker
 	const bookedDates: Date[] = data
-		.map(booking => {
+		.map(reservation => {
 			return eachDayOfInterval({
-				start: new Date(booking.startDate),
-				end: new Date(booking.endDate),
+				start: new Date(reservation.startDate),
+				end: new Date(reservation.endDate),
 			})
 		})
 		.flat()
@@ -147,3 +147,48 @@ export async function getGuest(email: string) {
 	// No error here! We handle the possibility of no guest in the sign in callback
 	return data
 }
+
+// Function to fetch reservations for a specific guest by their ID
+// Returns an array of reservation objects or throws an error if the fetch fails
+export async function getReservations(
+	guestId: string
+): Promise<Reservations[]> {
+	const { data, error, count } = await supabase
+		.from('reservations')
+		// We actually also need data on the suites as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
+		.select(
+			'id, created_at, startDate, endDate, status, numNights, numGuests, observations, totalPrice, guestId, suiteId, suites(name, image)'
+		)
+		.eq('guestId', guestId)
+		.order('startDate')
+
+	if (error) {
+		console.error(error)
+		throw new Error('Reservation could not get loaded')
+	}
+
+	return data.map(reservation => ({
+		...reservation,
+		suites:
+			reservation.suites && Array.isArray(reservation.suites)
+				? reservation.suites[0]
+				: reservation.suites,
+	}))
+}
+
+// Function to fetch a specific reservation by its ID
+// Returns a reservation object or throws an error if the fetch fails
+export async function getReservation(id: string): Promise<Reservations> {
+	const { data, error } = await supabase
+		.from('reservations')
+		.select('*')
+		.eq('id', id)
+		.single()
+
+	if (error) {
+		throw new Error('Reservation could not get loaded')
+	}
+
+	return data
+}
+

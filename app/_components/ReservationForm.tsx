@@ -4,25 +4,61 @@
 
 import { useReservationContext } from '@/context/ReservationContext'
 import Image from 'next/image'
+import { Suites } from '../_types'
+import { differenceInDays } from 'date-fns'
+import { createReservationAction } from '../_lib/actions'
+import SubmitButton from './SubmitButton'
 
-// Interface for reservation settings
-// This interface defines the structure of the reservation settings used in the form
-interface ReservationSettings {
-	maxCapacity: number
-}
-
+// This component receives the suite and user information as props
+// It uses the reservation context to manage the date range for the reservation
+// It calculates the number of nights and total price based on the selected dates and suite pricing
+// The form includes fields for the number of guests and any observations, along with a submit button
+// The form is styled with Tailwind CSS classes for a consistent look and feel
+// The component is designed to be used within the reservation context, allowing users to select dates and
 export default function ReservationForm({
 	suite,
 	user,
 }: {
-	suite: ReservationSettings
+	suite: Suites
 	user: {
 		firstName: string
 		avatar: string
 	}
 }) {
-	const { maxCapacity } = suite
-	const { range } = useReservationContext()
+	// Use the reservation context to get the current date range
+	// Extract the range from the context
+	const { range, resetRange } = useReservationContext()
+
+	// Extract necessary properties from the suite object
+	// This includes maxCapacity, regularPrice, and discount
+	const { maxCapacity, regularPrice, discount } = suite
+	const suiteId = suite.suiteId || suite.id.toString()
+
+	// If no range is selected, default to an empty CustomDateRange object
+	// If no range is selected, default to the current date for both start and end dates
+	const startDate = range.from || new Date()
+	const endDate = range.to || new Date()
+
+	// Calculate the number of nights based on the selected date range
+	// If no range is selected, default to 0 nights
+	// Calculate the total price based on the number of nights and the suite's pricing
+	const numNights = differenceInDays(endDate, startDate)
+	const suitePrice = numNights * (regularPrice - discount)
+
+	const reservationData = {
+		startDate,
+		endDate,
+		numNights,
+		suiteId,
+		suitePrice,
+	}
+
+	//Bind the reservation data to the form submission action
+	// This will be used to create a new reservation when the form is submitted
+	const createReservationWithData = createReservationAction.bind(
+		null,
+		reservationData
+	)
 
 	return (
 		<div className="scale-[1.01] w-full max-w-2xl mx-auto">
@@ -46,7 +82,12 @@ export default function ReservationForm({
 				</div>
 			</div>
 
-			<form className="bg-primary-900 py-8 px-6 sm:px-10 md:px-16 text-base sm:text-lg flex flex-col gap-6 rounded-md">
+			<form
+				action={async formData => {
+					await createReservationWithData(formData)
+					resetRange()
+				}}
+				className="bg-primary-900 py-8 px-6 sm:px-10 md:px-16 text-base sm:text-lg flex flex-col gap-6 rounded-md">
 				{/* Number of Guests */}
 				<div className="space-y-2">
 					<label htmlFor="numGuests" className="block font-medium">
@@ -82,15 +123,20 @@ export default function ReservationForm({
 
 				{/* Reservation Footer */}
 				<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mt-4">
-					<p className="text-primary-300 text-sm sm:text-base">
-						Start by selecting dates
-					</p>
-
-					<button className="bg-accent-500 px-5 py-3 text-primary-800 font-semibold rounded-sm hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300 w-full sm:w-auto">
-						Reserve now
-					</button>
+					{!range?.from || !range?.to ? (
+						<p className="text-primary-300 text-sm sm:text-base">
+							Start by selecting dates
+						</p>
+					) : (
+						<SubmitButton
+							className="bg-accent-500 px-5 py-3 sm:px-6 sm:py-3 text-primary-800 font-semibold rounded-sm hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 hover:scale-95 disabled:text-gray-300 w-full sm:w-auto"
+							pendingLabel="Reserving...">
+							Reserve Now
+						</SubmitButton>
+					)}
 				</div>
 			</form>
 		</div>
 	)
 }
+

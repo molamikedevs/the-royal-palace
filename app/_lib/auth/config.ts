@@ -5,6 +5,20 @@ import Google from 'next-auth/providers/google'
 import GitHub from 'next-auth/providers/github'
 import { createGuest, getGuest } from '../supabase/api'
 
+declare module 'next-auth' {
+	interface User {
+		guestId?: string | null
+	}
+	interface Session {
+		user: {
+			guestId?: string | null
+			name?: string | null
+			email?: string | null
+			image?: string | null
+		}
+	}
+}
+
 const authConfig: NextAuthConfig = {
 	providers: [
 		Google({
@@ -24,33 +38,31 @@ const authConfig: NextAuthConfig = {
 		signIn: '/login',
 	},
 
+	// Callbacks to handle session and user data
 	callbacks: {
 		async signIn({ user }) {
+			// Check if the user has a guest profile
 			try {
 				if (!user.email) return false
 
-				const guest = await getGuest(user.email)
+				const guest = await getGuest(user.email) // Fetch the guest profile by email
 				if (!guest) {
-					console.log('Creating new guest:', user.email)
 					await createGuest({
 						email: user.email,
 						fullName: user.name || '',
-					})
+					}) // Create a new guest profile if it doesn't exist
 				}
 
-				return true
+				return true // Allow sign-in if the guest profile exists or is created
 			} catch (error) {
-				console.error('Sign-in error:', error)
 				return false
 			}
 		},
-		async session({ session, user }) {
+		async session({ session }) {
 			// Attach user ID to the session object
-			const guest = await getGuest(session.user.email)
-			if (guest) {
-				session.user.id = guest.id
-			}
-			return session
+			const guest = await getGuest(session.user.email) // Fetch the guest profile by email
+			session.user.guestId = guest?.id || null // Add guestId to the session user object
+			return session // Return the modified session object
 		},
 	},
 }

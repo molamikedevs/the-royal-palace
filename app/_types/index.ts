@@ -8,6 +8,7 @@ import { ReactNode } from 'react'
 
 export interface Suites {
 	id: number // Unique identifier for the room
+	suiteId: string // Unique identifier for the suite
 	name: string // Name of the room
 	maxCapacity: number // Maximum number of guests allowed
 	regularPrice: number // Standard price without discounts
@@ -16,21 +17,6 @@ export interface Suites {
 	description: string // Description of the room
 }
 
-
-// Interface for the children prop
-// This is used to type components that accept children as props
-export interface Suite {
-	id: number // Unique identifier for the room
-	name: string // Name of the room
-	maxCapacity: number // Maximum number of guests allowed
-	regularPrice: number // Standard price without discounts
-	discount: number // Current discount amount (if any)
-	image: string | null // URL/path to room image (nullable)
-	description: string // Description of the room
-}
-
-// Interface for the children prop
-// This is used to type components that accept children as props
 export interface Country {
 	name: string // Name of the country
 	flag: string // URL/path to the country's flag image
@@ -59,31 +45,37 @@ export interface ChildrenProps {
 	children: ReactNode // ReactNode type for children prop
 }
 
-// Interface for the booking object
-// This defines the structure of a booking object used in the application
-export interface Booking {
+// Interface for the reservation object
+// This defines the structure of a reservation object used in the application
+export interface Reservations {
 	id: string
 	guestId: string
+	suiteId: string
+	observations: string
 	startDate: string | Date
 	endDate: string | Date
 	numNights: number
 	totalPrice: number
+	suitePrice: number
 	numGuests: number
 	status: string
 	created_at: string | Date
-	cabins: {
+	suites: {
 		name: string
 		image: string
 	}
 }
 
-// Interface for reservation properties
-// This defines the structure of the reservation properties used in the application
-export interface ReservationProps {
-	suite: Suites
-	settings: any // Replace 'any' with the correct type if available
-	bookedDates: any // Replace 'any' with the correct type if available
+// Interface for the reservation form data
+// This defines the structure of the data submitted through the reservation form
+export interface ReservationFormData {
+	startDate: Date | string // Start date of the reservation
+	endDate: Date | string // End date of the reservation
+	numNights: number // Number of nights for the reservation
+	suiteId: string // ID of the suite being reserved
+	suitePrice: number // Price of the suite for the reservation
 }
+
 
 // Interface for the navigation context
 // This defines the structure of the navigation context used in the application

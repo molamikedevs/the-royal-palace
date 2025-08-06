@@ -2,12 +2,13 @@
 // This file defines the Reservation component which handles the reservation process for a specific suite
 import { auth } from '@/app/_lib/auth/config'
 import { getBookedDatesBySuiteId, getSettings } from '@/app/_lib/supabase/api'
-import { Suite } from '@/app/_types'
+
 import DateSelector from './DateSelector'
 import LoginMessage from './LoginMessage'
 import ReservationForm from './ReservationForm'
+import { Suites } from '../_types'
 
-const Reservation = async ({ suite }: { suite: Suite }) => {
+const Reservation = async ({ suite }: { suite: Suites }) => {
 	const session = await auth()
 	const user = {
 		firstName: session?.user?.name?.split(' ')?.[0] || 'Guest',

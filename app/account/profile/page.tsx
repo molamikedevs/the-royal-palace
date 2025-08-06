@@ -3,14 +3,17 @@ import { Metadata } from "next"
 
 import UpdateProfileForm from "@/app/_components/UpdateProfileForm";
 import SelectCountry from '@/app/_components/SelectCountry'
+import { auth } from '@/app/_lib/auth/config'
+import { getGuest } from '@/app/_lib/supabase/api'
 
 // this snippet defines the metadata for the Profile page
 export const metadata: Metadata = {
 	title: 'Profile',
 }
 
-const ProfilePage = () => {
-	const nationality = 'Sierra Leone'
+const ProfilePage = async () => {
+	const session = await auth()
+	const guest = session?.user?.email ? await getGuest(session.user.email) : null
 
 	return (
 		<div className="px-4 sm:px-6 md:px-8 py-6 overflow-hidden">
@@ -23,12 +26,12 @@ const ProfilePage = () => {
 					faster and smoother. See you soon!
 				</p>
 
-				<UpdateProfileForm>
+				<UpdateProfileForm guest={guest}>
 					<SelectCountry
 						name="nationality"
 						id="nationality"
 						className="px-4 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm border-none focus:ring-2 focus:ring-accent-500"
-						defaultCountry={nationality}
+						defaultCountry={guest?.nationality}
 					/>
 				</UpdateProfileForm>
 			</div>

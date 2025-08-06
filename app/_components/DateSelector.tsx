@@ -5,26 +5,40 @@
 
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
-import { CustomDateRange, Suite } from '../_types'
+import { CustomDateRange, Suites } from '../_types'
 import { useReservationContext } from '@/context/ReservationContext'
+import { differenceInDays, isPast, isSameDay } from 'date-fns'
+import { isAlreadyBooked } from '../_lib/utils'
 
 type DateSelectorProps = {
 	settings: any
 	bookedDates: Date[]
-	suite: Suite
+	suite: Suites
 }
 
 function DateSelector({ settings, bookedDates, suite }: DateSelectorProps) {
+	// Use the reservation context to manage date selection
 	const { range, setRange, resetRange } = useReservationContext()
-	// CHANGE
-	const regularPrice = 23
-	const discount = 23
-	const numNights = 23
-	const cabinPrice = 23
 
-	// SETTINGS
+	// If no range is selected, default to an empty CustomDateRange object
+	const displayRange: CustomDateRange = isAlreadyBooked(range, bookedDates)
+		? { from: undefined, to: undefined }
+		: range
 
+	// Extract necessary settings for reservation
 	const { maxBookingLength, minBookingLength } = settings
+
+	// Extract regular price and discount from the suite object
+	const { regularPrice, discount } = suite
+
+	// Calculate the number of nights based on the selected date range
+	// If no range is selected, default to 0 nights
+	// Calculate the total price based on the number of nights and the suite's pricing
+	const numNights = differenceInDays(
+		displayRange.to || new Date(),
+		displayRange.from || new Date()
+	)
+	const cabinPrice = numNights * (regularPrice - discount)
 
 	return (
 		<div className="flex flex-col justify-between">
@@ -32,16 +46,19 @@ function DateSelector({ settings, bookedDates, suite }: DateSelectorProps) {
 				className="pt-12 place-self-center"
 				mode="range"
 				onSelect={range => setRange((range as CustomDateRange) || {})}
-				selected={range}
+				selected={displayRange}
 				min={minBookingLength + 1}
 				max={maxBookingLength}
 				fromMonth={new Date()}
 				fromDate={new Date()}
 				toYear={new Date().getFullYear() + 5}
+				disabled={curDate =>
+					isPast(curDate) || bookedDates.some(date => isSameDay(date, curDate))
+				}
 				captionLayout="dropdown"
 				numberOfMonths={1} // 👈 fallback for small screens
 				modifiersClassNames={{
-					selected: 'bg-accent-500 text-white',
+					selected: 'bg-accent-600 text-white',
 					disabled: 'opacity-40',
 				}}
 				classNames={{
