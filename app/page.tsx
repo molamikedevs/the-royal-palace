@@ -17,9 +17,9 @@ export default function Page() {
 				}}
 			/>
 
-			<div className="relative z-10 px-4 pt-[30vh] md:pt-0 md:block">
+			<div className="relative z-10 px-4 pt-[20vh] md:pt-0 md:block">
 				<div className="text-center">
-					<h1 className="text-4xl md:text-6xl lg:text-8xl text-primary-50 mb-14 md:mb-12 tracking-tight font-normal">
+					<h1 className="text-3xl md:text-6xl lg:text-8xl text-primary-50 mb-[5rem] md:mb-12 tracking-tight font-normal">
 						Welcome to paradise.
 					</h1>
 					<Link

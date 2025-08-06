@@ -30,12 +30,12 @@ function SignInButtons() {
 	}
 
 	return (
-		<div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm mx-auto px-4 sm:px-0">
+		<div className="flex flex-col sm:flex-row  gap-4 w-full max-w-sm mx-auto px-4 sm:px-0">
 			{/* Google Button */}
 			<form
 				action={signInAction}
 				onSubmit={() => handleSignIn('google')}
-				className="w-full">
+				className="w-full mb-5 mb:mb-2 hover:scale-95 transition-transform">
 				<input type="hidden" name="provider" value="google" />
 				<button
 					type="submit"
@@ -60,7 +60,7 @@ function SignInButtons() {
 			<form
 				action={signInAction}
 				onSubmit={() => handleSignIn('github')}
-				className="w-full">
+				className="w-full hover:scale-95 transition-transform">
 				<input type="hidden" name="provider" value="github" />
 				<button
 					type="submit"
