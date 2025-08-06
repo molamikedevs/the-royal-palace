@@ -6,10 +6,10 @@ import {
 	MapPinIcon,
 	UsersIcon,
 } from '@heroicons/react/24/outline'
-import { Suite } from '../_types'
+import { Suites } from '../_types'
 import TextExpander from './TextExpander'
 
-const SuitePage = async ({ suite }: { suite: Suite }) => {
+const SuitePage = async ({ suite }: { suite: Suites }) => {
 	const { name, maxCapacity, image, description } = suite
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-12 border border-primary-800 rounded-lg p-6 sm:p-8 lg:p-10 mb-12 lg:mb-24">
