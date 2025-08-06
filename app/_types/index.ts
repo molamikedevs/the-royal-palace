@@ -8,6 +8,7 @@ import { ReactNode } from 'react'
 
 export interface Suites {
 	id: number // Unique identifier for the room
+	suiteId?: string // Optional suite ID for legacy support
 	name: string // Name of the room
 	maxCapacity: number // Maximum number of guests allowed
 	regularPrice: number // Standard price without discounts
