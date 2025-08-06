@@ -18,8 +18,9 @@ export const getSuites = async function (): Promise<Suites[]> {
 		const { data, error } = await supabase
 			.from('suites')
 			.select(
-				'id, name, maxCapacity, regularPrice, discount, image, description, suiteId'
+				'id, name, maxCapacity, regularPrice, discount, image, description'
 			)
+
 			.order('name')
 
 		// Handle any errors returned from Supabase
@@ -51,7 +52,7 @@ export const getSuiteById = async function (id: string): Promise<Suites> {
 		const { data, error } = await supabase
 			.from('suites')
 			.select(
-				'id, name, maxCapacity, regularPrice, discount, description, image, suiteId'
+				'id, name, maxCapacity, regularPrice, discount, description, image'
 			)
 			.eq('id', id)
 			.single()
