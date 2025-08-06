@@ -18,7 +18,7 @@ export const getSuites = async function (): Promise<Suites[]> {
 		const { data, error } = await supabase
 			.from('suites')
 			.select(
-				'id, name, maxCapacity, regularPrice, discount, image, description'
+				'id, name, maxCapacity, regularPrice, discount, image, description, suiteId'
 			)
 			.order('name')
 
@@ -51,7 +51,7 @@ export const getSuiteById = async function (id: string): Promise<Suites> {
 		const { data, error } = await supabase
 			.from('suites')
 			.select(
-				'id, name, maxCapacity, regularPrice, discount, description, image'
+				'id, name, maxCapacity, regularPrice, discount, description, image, suiteId'
 			)
 			.eq('id', id)
 			.single()
@@ -157,7 +157,7 @@ export async function getReservations(
 		.from('reservations')
 		// We actually also need data on the suites as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
 		.select(
-			'id, created_at, startDate, endDate, status, numNights, numGuests, observations, totalPrice, guestId, suiteId, suites(name, image)'
+			'id, created_at, startDate, endDate, status, numNights, numGuests, observations, totalPrice, guestId, suiteId, suitePrice, suites(name, image)'
 		)
 		.eq('guestId', guestId)
 		.order('startDate')
