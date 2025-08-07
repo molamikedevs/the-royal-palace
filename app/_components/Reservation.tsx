@@ -20,7 +20,7 @@ const Reservation = async ({ suite }: { suite: Suites }) => {
 	])
 
 	return (
-		<div className="grid grid-cols-1 lg:grid-cols-2 border border-primary-800 min-h-[400px] lg:min-h-[500px] rounded-lg p-6 sm:p-8 lg:p-10 mt-8 lg:mt-12 gap-6 lg:gap-8">
+		<div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-12 border border-primary-800 rounded-lg p-6 sm:p-8 lg:p-10 mb-12 lg:mb-24">
 			<DateSelector
 				settings={settings}
 				bookedDates={bookedDates}

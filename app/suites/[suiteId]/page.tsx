@@ -59,8 +59,8 @@ const SuiteDetailsPage = async ({
 			<Suite suite={suite} />
 			{/* Reservation Section */}
 			<div className="text-center px-4">
-				<h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold">
-					Reserve {suite.name} today. Pay on arrival.
+				<h2 className="text-3xl sm:text-4xl lg:text-xl font-semibold">
+					Reserve {suite.name}now Pay on arrival.
 				</h2>
 
 				<Suspense fallback={<Spinner />}>
