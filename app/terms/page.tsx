@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
-import Footer from '@/app/_components/Footer'
+import Footer from "@/components/ui/Footer";
+
 
 const Terms = () => {
 	return (

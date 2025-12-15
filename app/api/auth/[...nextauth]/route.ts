@@ -1,1 +1,2 @@
-export {GET, POST } from "../../../_lib/auth/config"
+// NextAuth route handler
+export { GET, POST } from "@/lib/auth/config";

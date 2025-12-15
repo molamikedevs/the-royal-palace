@@ -1,13 +1,12 @@
-import React from 'react'
-import Spinner from '@/app/_components/Loader'
+import Spinner from "@/components/common/Loader";
 
 const Loading = () => {
-	return (
-		<div className="grid items-center justify-center">
-			<p>Loading account details...</p>
-			<Spinner />
-		</div>
-	)
-}
+  return (
+    <div className="grid items-center justify-center">
+      <p>Loading account details...</p>
+      <Spinner />
+    </div>
+  );
+};
 
-export default Loading
+export default Loading;

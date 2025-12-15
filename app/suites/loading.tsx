@@ -1,12 +1,12 @@
-import Spinner from '@/app/_components/Loader'
+import Spinner from "@/components/common/Loader";
 
 const Loading = () => {
-	return (
-		<div className="grid items-center justify-center">
-			<p>Loading suites...</p>
-			<Spinner />
-		</div>
-	)
-}
+  return (
+    <div className="grid items-center justify-center">
+      <p>Loading suites...</p>
+      <Spinner />
+    </div>
+  );
+};
 
-export default Loading
+export default Loading;

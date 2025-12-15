@@ -2,7 +2,7 @@
 // It provides a way to set and reset the date range for reservations.
 'use client'
 
-import { ChildrenProps, CustomDateRange } from '@/app/_types' // Importing types for children props and custom date range
+import { ChildrenProps, CustomDateRange } from '@/types' // Importing types for children props and custom date range
 import { createContext, useContext, useState } from 'react' // Importing React context and hooks for state management
 
 // Define the initial state for the date range
