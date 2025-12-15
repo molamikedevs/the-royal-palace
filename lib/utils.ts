@@ -1,15 +1,11 @@
-// Utility functions for the Royal Palace application
+import { CustomDateRange } from "@/types";
 import { formatDistance, isWithinInterval, parseISO } from "date-fns";
-import { CustomDateRange } from "../../types";
 
-// Interface for formatDistance options
-// This interface defines the options that can be passed to the formatDistance function
 export interface FormatDistanceOptions {
   addSuffix?: boolean;
 }
 
-// Get countries from an external API
-// This function fetches a list of countries and their flags from a public API
+// Fetches a list of countries with their names and flags
 export async function getCountries() {
   try {
     const res = await fetch(
